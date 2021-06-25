@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.lucas9.lblog.mapper.CommentMapper">
+    <select id="selectComments" resultType="top.lucas9.lblog.vo.CommentVo">
+        select c.id, c.content, c.parent_id, c.article_id,
+               c.user_id, c.vote_up, c.vote_down, c.level,
+               c.status, c.created, c.modified,
+               u.id       as authorId,
+               u.username as authorName,
+               u.avatar   as authorAvatar
+        from `comment` c
+                 left join `user` u on c.user_id = u.id
+            ${ew.customSqlSegment}
+    </select>
+</mapper>

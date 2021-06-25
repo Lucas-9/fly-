@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.lucas9.lblog.mapper.UserMessageMapper">
+
+    <select id="selectMessages" resultType="top.lucas9.lblog.vo.UserMessageVo">
+        SELECT m.id,
+               m.user_id_of_send,
+               m.user_id_of_receive,
+               m.article_id,
+               m.comment_id,
+               m.content,
+               m.type,
+               m.created,
+               m.modified,
+               m.status,
+               (
+                   SELECT username
+                   FROM `user`
+                   WHERE id = m.user_id_of_send
+               ) AS usernameOfSend,
+               (
+                   SELECT title
+                   FROM `article`
+                   WHERE id = m.article_id
+               ) AS articleTitle
+        FROM `user_message` m
+            ${ew.customSqlSegment}
+    </select>
+    <select id="selectOneMessage" resultType="top.lucas9.lblog.vo.UserMessageVo">
+        SELECT m.id,
+               m.user_id_of_send,
+               m.user_id_of_receive,
+               m.article_id,
+               m.comment_id,
+               m.content,
+               m.type,
+               m.created,
+               m.modified,
+               m.status,
+               (
+                   SELECT username
+                   FROM `user`
+                   WHERE id = m.user_id_of_send
+               ) AS usernameOfSend,
+               (
+                   SELECT title
+                   FROM `article`
+                   WHERE id = m.article_id
+               ) AS articleTitle
+        FROM `user_message` m
+            where `id` = #{messageId}
+    </select>
+</mapper>
